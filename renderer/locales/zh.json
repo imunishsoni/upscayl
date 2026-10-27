@@ -225,6 +225,10 @@
     }
   },
   "ERRORS": {
+    "VULKAN_ERROR": {
+      "TITLE": "Vulkan Initialization Error",
+      "DESCRIPTION": "Failed to initialize Vulkan graphics API (vkCreateInstance failed). This usually means:\n\n1. Your GPU drivers are outdated — please update them from your GPU manufacturer's website (NVIDIA, AMD, or Intel).\n2. Your GPU may not support Vulkan — verify using VulkanCapsViewer.\n3. If you have multiple GPUs, try changing the GPU ID in Upscayl Settings."
+    },
     "GPU_ERROR": {
       "TITLE": "GPU 错误",
       "DESCRIPTION": "显卡出现问题，请阅读文档以排除系统故障！({data})"

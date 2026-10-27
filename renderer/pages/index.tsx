@@ -103,7 +103,30 @@ const Home = () => {
   // ELECTRON EVENT LISTENERS
   useEffect(() => {
     const handleErrors = (data: string) => {
-      if (data.includes("Invalid GPU")) {
+      if (data.includes("vkCreateInstance") || data.includes("VK_ERROR")) {
+        toast({
+          title: t("ERRORS.VULKAN_ERROR.TITLE"),
+          description: t("ERRORS.VULKAN_ERROR.DESCRIPTION"),
+          action: (
+            <div className="flex flex-col gap-2">
+              <ToastAction
+                altText={t("ERRORS.COPY_ERROR.TITLE")}
+                onClick={() => {
+                  navigator.clipboard.writeText(data);
+                }}
+              >
+                {t("ERRORS.COPY_ERROR.TITLE")}
+              </ToastAction>
+              <a href="https://docs.upscayl.org/" target="_blank">
+                <ToastAction altText={t("ERRORS.OPEN_DOCS_TITLE")}>
+                  {t("ERRORS.OPEN_DOCS_BUTTON_TITLE")}
+                </ToastAction>
+              </a>
+            </div>
+          ),
+        });
+        resetImagePaths();
+      } else if (data.includes("Invalid GPU")) {
         toast({
           title: t("ERRORS.GPU_ERROR.TITLE"),
           description: t("ERRORS.GPU_ERROR.DESCRIPTION", { data }),
@@ -191,10 +214,37 @@ const Home = () => {
     });
     // UPSCAYL ERROR
     window.electron.on(ELECTRON_COMMANDS.UPSCAYL_ERROR, (_, data: string) => {
-      toast({
-        title: t("ERRORS.GENERIC_ERROR.TITLE"),
-        description: data,
-      });
+      if (
+        data.includes("vkCreateInstance") ||
+        data.includes("VK_ERROR")
+      ) {
+        toast({
+          title: t("ERRORS.VULKAN_ERROR.TITLE"),
+          description: t("ERRORS.VULKAN_ERROR.DESCRIPTION"),
+          action: (
+            <div className="flex flex-col gap-2">
+              <ToastAction
+                altText={t("ERRORS.COPY_ERROR.TITLE")}
+                onClick={() => {
+                  navigator.clipboard.writeText(data);
+                }}
+              >
+                {t("ERRORS.COPY_ERROR.TITLE")}
+              </ToastAction>
+              <a href="https://docs.upscayl.org/" target="_blank">
+                <ToastAction altText={t("ERRORS.OPEN_DOCS_TITLE")}>
+                  {t("ERRORS.OPEN_DOCS_BUTTON_TITLE")}
+                </ToastAction>
+              </a>
+            </div>
+          ),
+        });
+      } else {
+        toast({
+          title: t("ERRORS.GENERIC_ERROR.TITLE"),
+          description: data,
+        });
+      }
       resetImagePaths();
     });
     // UPSCAYL PROGRESS
